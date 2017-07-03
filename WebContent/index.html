@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="resource/easyui/themes/default/easyui.css">
+<script type="text/javascript" src="resource/jquery/jquery.min.js"></script>
+<script type="text/javascript"
+	src="resource/jquery/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#tt').tree({
+			onClick : function(node) {
+				//alert(node.text);  在用户点击的时候提示
+				//先判断是否存在
+				var isCreate=$("#cc").tabs("exists",node.text);
+				//存在就重新选择这个页面卡
+				if(isCreate == true){
+					//tabs相当于类 select 类中方法，然后传值
+					var isCreate=$("#cc").tabs("select",node.text);
+				}else{
+					//创建右边对应的选项卡
+					$("#cc").tabs("add",{
+										title : node.text,
+										closable : true,
+										fit : true,
+										content : "<iframe src=' "
+												+ node.attributes.url
+												+ "' style='width:100%;height:100%'/>"
+									});
+				}	
+			}
+
+		});
+	});
+</script>	
+</head>
+<body class="easyui-layout">
+	<div
+		data-options="region:'north',title:'Student Mananger System',split:true"
+		style="height: 100px;">
+		<img alt="" src="resource/image/1.PNG"
+			style="height: 100%; width: 100%">
+	</div>
+	<!--     <div data-options="region:'south',title:'',split:true" style="height:100px;"></div>    -->
+	<!--     <div data-options="region:'east',iconCls:'icon-reload',title:'East',split:true" style="width:100px;"></div>    -->
+	<div data-options="region:'west',title:'操作',split:true"
+		style="width: 100px;">
+		<ul id="tt" class="easyui-tree">
+			<li><span>学生管理</span>
+				<ul>
+					<li><span>hello</span>
+						<ul>
+							<li data-options="attributes:{'url':('stuList.html')}"><span>学生列表</span></li>
+							<li data-options="attributes:{'url':('https://www.baidu.com/')}"><span>File 12</span></li>
+							<li><span>File 13</span></li>
+						</ul></li>
+					<li><span>File 2</span></li>
+					<li><span>File 3</span></li>
+				</ul></li>
+			<li><span>File21</span></li>
+		</ul>
+
+
+	</div>
+	<div data-options="region:'center',title:'center title'"
+		style="padding: 5px; background: #eee;" class="easyui-tabs" id="cc">
+		<div title="首页"
+			style="background-image: url('resource/image/login_2.jpg'); background-size: 100% 100%"></div>
+	</div>
+</body>
+
+
+</html>

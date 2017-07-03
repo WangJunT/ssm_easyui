@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="resource/easyui/themes/default/easyui.css">
+<link type="text/css" rel="stylesheet" href="resource/easyui/themes/icon.css">
+<!-- 这一段和下一段前后关系不能颠倒 -->
+<script type="text/javascript" src="resource/jquery/jquery.min.js"></script>
+<script type="text/javascript"
+	src="resource/jquery/jquery.easyui.min.js"></script>
+	<!-- 使文字变成中文 -->
+<script type="text/javascript" src="resource/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function() {
+		//创建表格
+		$('#table').datagrid({    
+		    url:"stuList",
+			title:"人员管理",
+		    fit:true,
+		    
+			columns:[[    
+		        {field:'name',title:'姓名',width:"20%"}, 
+		        {field:'age',title:'年龄',width:"20%"},
+		        {field:'tName',title:'老师',width:"20%"},
+		    ]],
+		});
+	});
+</script>
+</head>
+<body>
+	<table id="table">
+	</table>
+	
+</body>
+</html>
