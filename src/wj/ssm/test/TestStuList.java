@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import wj.ssm.mapper.StudentListMapper;
+import wj.ssm.po.Page;
 import wj.ssm.po.StudentCT;
 import wj.ssm.service.impl.CrudStuImpl;
 
@@ -40,6 +41,14 @@ public class TestStuList {
 	@Test
 	public void testServiceImpl(){
 		List<StudentCT> list = crudStuImpl.findStuList();
+		System.out.println("service"+list.size());
+	}
+	@Test
+	public void testServiceImpl1(){
+		Page page = new Page();
+		page.setStart(0);
+		page.setSize(5);
+		List<StudentCT> list = crudStuImpl.findStuLimit(page);
 		System.out.println("service"+list.size());
 	}
 }

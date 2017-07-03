@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class) // 调用Spring单元测试类
 @WebAppConfiguration // 调用Java Web组件，如自动注入ServletContext Bean等
 @ContextConfiguration(locations = { "classpath:spring/applicationContext-service.xml","classpath:spring/applicationContext-dao.xml","classpath:spring/springmvc.xml" }) // 加载Spring配置文件
+//@ContextConfiguration(locations = { "classpath*:spring/applicationContext-*.xml","classpath:spring/springmvc.xml" })
 public class TestController {
 	@Autowired
 	private CrudStudent crudStudent;

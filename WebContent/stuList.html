@@ -12,25 +12,39 @@
 	<!-- 使文字变成中文 -->
 <script type="text/javascript" src="resource/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
+
 	$(function() {
 		//创建表格
 		$('#table').datagrid({    
-		    url:"stuList",
+		    url:"stuList.action",
 			title:"人员管理",
 		    fit:true,
-		    
+		    toolbar:"#tb",
 			columns:[[    
-		        {field:'name',title:'姓名',width:"20%"}, 
-		        {field:'age',title:'年龄',width:"20%"},
-		        {field:'tName',title:'老师',width:"20%"},
+				{field:'',title:'选择',width:"20%",checkbox:'true'},
+		        {field:'stuid',title:'学号',width:"15%"}, 
+		        {field:'name',title:'姓名',width:"15%"}, 
+		        {field:'age',title:'年龄',width:"15%"},
+		        {field:'tName',title:'老师',width:"15%"},
+		        {field:'course',title:'课程',width:"15%"},
+		        {field:'image',title:'头像',width:"15%"},
 		    ]],
+		    pageSize : 5,//默认选择的分页是每页5行数据
+		    pageList : [ 5, 10, 15],//可以选择的分页集合 
+		    pagination:true,
 		});
 	});
+	
 </script>
 </head>
 <body>
 	<table id="table">
 	</table>
+	<div id="tb">
+		<a id="add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
+		<a id="update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改</a>
+		<a id="delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+	</div>
 	
 </body>
 </html>
