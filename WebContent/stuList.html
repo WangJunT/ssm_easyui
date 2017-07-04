@@ -12,16 +12,15 @@
 	<!-- 使文字变成中文 -->
 <script type="text/javascript" src="resource/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-
+	
 	$(function() {
 		//创建表格
 		$('#table').datagrid({    
 		    url:"stuList.action",
 			title:"人员管理",
 		    fit:true,
-		    toolbar:"#tb",
 			columns:[[    
-				{field:'',title:'选择',width:"20%",checkbox:'true'},
+				{field:'',width:"20%",checkbox:'true'},
 		        {field:'stuid',title:'学号',width:"15%"}, 
 		        {field:'name',title:'姓名',width:"15%"}, 
 		        {field:'age',title:'年龄',width:"15%"},
@@ -29,12 +28,111 @@
 		        {field:'course',title:'课程',width:"15%"},
 		        {field:'image',title:'头像',width:"15%"},
 		    ]],
+		    iconCls : 'icon-ok',
+		    toolbar:"#tb",
 		    pageSize : 5,//默认选择的分页是每页5行数据
 		    pageList : [ 5, 10, 15],//可以选择的分页集合 
 		    pagination:true,
 		});
 	});
-	
+	//点击 add 按钮显示添加学生表单
+	$(function() {		
+		$("#add").click(function() {
+			$("#form").attr("opmodel","addStu.action");
+			$('#dlg').dialog({    
+			    title: '添加',    
+			    width: 400,    
+			    height: 200,    
+			    closed: false,    
+			    modal: true   
+			});    
+		});
+	});
+	//为课程填充数据，即在用户界面显示成具体的值
+	$(function(){
+		$("#course").combobox({
+			url:"corList.action",
+			valueField:"id",
+			textField:"course",
+			value:-1// 默认为后台map的-1
+		});
+	});
+	//同上
+	$(function(){
+		$("#tName").combobox({
+			url:"teaList.action",
+			valueField:"id",
+			textField:"tName",
+			value:-1// 默认为后台map的-1
+		});
+	});
+	$(function(){
+		$("#fok").click(function(){
+			var opmodel = $("#form").attr("opmodel");
+			console.log(opmodel);
+			$('#form').form('submit', {    
+			    url:opmodel,    
+			    success:function(data){    
+			        var json = $.parseJSON(data);
+			        console.log(json);
+			        if (json.result==true){
+			        	$.messager.alert("通知",json.message, "info",function(){
+			        		$("#table").datagrid("reload");
+			        		$("#dlg").dialog("close");
+			        		$("#form").form("clear");
+			        		$("#course").combobox("setValues",-1);
+			        		$("#tName").combobox("setValues",-1);
+			        	});
+			        }
+			    }    
+			});  
+		});
+	});
+	$(function(){
+		 $("#update").click(function(){
+	         $("#form").attr("opmodel","updateStu.action");
+	         var select = $("#table").datagrid("getSelected");
+	         if (select == null) {
+				   $.messager.alert("警告","请选择要修改数据的员工");
+			       return;
+			 }
+			 $("#form").form("load",select);
+	         $("#dlg").dialog({
+	               title:"修改信息",
+	               width: 400,    
+				    height: 200,    
+				    closed: false,    
+				    modal: true   
+	         });
+	   });
+	});
+	$(function(){
+		 $("#delete").click(
+                 function(){
+                      var selected = $("#table").datagrid("getSelected"); 
+                      if (selected == null) {
+							$.messager.alert("警告","请选择要删除数据的员工");
+							return;
+						}
+						$.messager.confirm("警告","确定要删除"+selected.name+"的数据吗",function(r){
+						    $.ajax({
+                                  url:"delStu.action",
+                                 type:"post",
+                                 data:{
+                                         "id":selected.stuid,
+                                         "op":"delEmployee"
+                                      },
+                             dataType:"json",
+                             
+                              success:function(data){
+                                      $.messager.alert("警告",data.message,"info",function(){
+                                      $("#table").datagrid("reload");
+                               });
+                             }
+                         });
+		               });
+            });
+	});
 </script>
 </head>
 <body>
@@ -45,6 +143,42 @@
 		<a id="update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改</a>
 		<a id="delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
 	</div>
-	
+	<div id="dlg"> 
+	 	<form  id="form" method="post">
+		 	<table  style="height: 100%;width: 100%">
+		 		<tr>
+			 		<td style="text-align:center;width: 100px"> 学号</td>
+			 		<td> <input class="easyui-textbox"    name="stuid" style="width:200px"> </td>
+		 		</tr>
+		 		<tr>
+			 		<td style="text-align:center;width: 100px"> 课程</td>
+			 		<td> 
+			 			<select id="course" class="easyui-combobox"  name="course" style="width:200px;">   
+						</select>  
+					</td>
+		 		</tr>
+		 		<tr>
+			 		<td style="text-align:center;width: 100px"> 年龄</td>
+			 		<td> <input class="easyui-textbox"    name ="age"  style="width:200px"> </td>
+		 		</tr>
+		 		<tr>
+			 		<td style="text-align:center;width: 100px"> 老师</td>
+			 		<td> 
+			 			<select id="tName" class="easyui-combobox"  name="tName" style="width:200px;">   
+						</select> 
+					</td>
+		 		</tr>
+		 		<tr>
+			 		<td style="text-align:center;width: 100px"> 姓名</td>
+			 		<td> <input class="easyui-textbox"   name ="name" style="width:200px"> </td>
+		 		</tr>
+		 		<tr>
+			 		<td style="text-align:center;width: 100px"> 头像</td>
+			 		<td> <input class="easyui-textbox"   name ="image" style="width:200px"> </td>
+		 		</tr>
+		 	</table>
+	 		<div  style="width: 100%;text-align: center;">  <a  id = "fok" class="easyui-linkbutton" iconCls ="icon-ok">提交</a></div>
+	 	</form>
+	 </div>
 </body>
 </html>

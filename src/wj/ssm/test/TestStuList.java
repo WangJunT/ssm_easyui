@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import wj.ssm.mapper.StudentListMapper;
 import wj.ssm.po.Page;
 import wj.ssm.po.StudentCT;
+import wj.ssm.po.StudentVO;
 import wj.ssm.service.impl.CrudStuImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,10 +46,21 @@ public class TestStuList {
 	}
 	@Test
 	public void testServiceImpl1(){
+		//对分页功能进行测试
 		Page page = new Page();
 		page.setStart(0);
 		page.setSize(5);
 		List<StudentCT> list = crudStuImpl.findStuLimit(page);
 		System.out.println("service"+list.size());
+	}
+	@Test
+	public void testAdd(){
+		//对增加功能进行测试
+		StudentVO stu = new StudentVO();
+		stu.setName("地利");
+		stu.setAge(19);
+		stu.setCourse(1);
+		stu.settName(2);
+		System.out.println(crudStuImpl.insertStu(stu));
 	}
 }
