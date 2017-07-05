@@ -11,6 +11,7 @@
 	src="resource/jquery/jquery.easyui.min.js"></script>
 	<!-- 使文字变成中文 -->
 <script type="text/javascript" src="resource/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="resource/ajaxfileupload.js"></script>
 <script type="text/javascript">
 	
 	$(function() {
@@ -26,7 +27,11 @@
 		        {field:'age',title:'年龄',width:"15%"},
 		        {field:'tName',title:'老师',width:"15%"},
 		        {field:'course',title:'课程',width:"15%"},
-		        {field:'image',title:'头像',width:"15%"},
+		        {field:'image',title:'头像',width:"15%",
+		        	formatter:function(value,row,index){
+		        		return '<img src="/pic/'+row.image+'"width=70 height=50 />';
+		        	}
+		        },
 		    ]],
 		    iconCls : 'icon-ok',
 		    toolbar:"#tb",
@@ -133,6 +138,39 @@
 		               });
             });
 	});
+	function ajaxDemoUpload(){
+	
+		var fileName = $("#picture").val();
+		console.log(fileName);
+		if(fileName.lastIndexOf(".")==-1){
+			alert("上传的文件必须要有后缀名!");
+		}
+		$.ajaxFileUpload({
+			url:"upPic.action",		
+			secureuri:false,
+			fileElementId:'picture',
+			dataType:'text',
+			success:function(data){
+				var json = $.parseJSON(data);
+				console.log(json);
+				if(data!=null){
+					var filename = json.name;
+					console.log(filename);
+					$("#image").attr('src',"/pic/"+filename)
+				}
+			},
+			error:function(data){
+				console.log(data);
+				var json = $.parseJSON(data);
+				console.log(json);
+				if(data!=null){
+					var filename = json.name;
+					console.log(filename);
+					$("#image").attr('src',"/pic/"+filename)
+				}
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -144,7 +182,7 @@
 		<a id="delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
 	</div>
 	<div id="dlg"> 
-	 	<form  id="form" method="post">
+	 	<form  id="form" method="post" enctype="multipart/form-data">
 		 	<table  style="height: 100%;width: 100%">
 		 		<tr>
 			 		<td style="text-align:center;width: 100px"> 学号</td>
@@ -174,7 +212,11 @@
 		 		</tr>
 		 		<tr>
 			 		<td style="text-align:center;width: 100px"> 头像</td>
-			 		<td> <input class="easyui-textbox"   name ="image" style="width:200px"> </td>
+			 		<td > 
+			 		<img   width=100  height=100 name="image"/>
+			 		<input type="file" name ="picture" id="picture" style="width:200px;"> 
+			 			<input type="button" onclick="return ajaxDemoUpload();" value="上传">
+			 		</td>
 		 		</tr>
 		 	</table>
 	 		<div  style="width: 100%;text-align: center;">  <a  id = "fok" class="easyui-linkbutton" iconCls ="icon-ok">提交</a></div>
