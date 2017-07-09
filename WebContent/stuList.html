@@ -102,6 +102,7 @@
 			       return;
 			 }
 			 $("#form").form("load",select);
+			 //$("#file").attr('src',"/pic/"+$("#image").val());
 	         $("#dlg").dialog({
 	               title:"修改信息",
 	               width: 400,    
@@ -156,17 +157,19 @@
 				if(data!=null){
 					var filename = json.name;
 					console.log(filename);
-					$("#image").attr('src',"/pic/"+filename)
+					$("#file").attr('src',"/pic/"+filename)
 				}
 			},
-			error:function(data){
-				console.log(data);
-				var json = $.parseJSON(data);
-				console.log(json);
+			error:function(data){	
 				if(data!=null){
-					var filename = json.name;
+					console.log(data);
+					var da = data.responseText;
+					console.log(da);
+					var filename = da.substring(da.indexOf("filename")+11,da.lastIndexOf('"}'));
 					console.log(filename);
-					$("#image").attr('src',"/pic/"+filename)
+					$("#file").attr('src',"/pic/"+filename);
+					$("#image").val(filename);
+					console.log($("#image").val());
 				}
 			}
 		});
@@ -213,9 +216,10 @@
 		 		<tr>
 			 		<td style="text-align:center;width: 100px"> 头像</td>
 			 		<td > 
-			 		<img   width=100  height=100 name="image"/>
+			 		<input class="easyui-textbox"  name ="image" id ="image" style="width:200px">
+			 		<img   width=100  height=100 name="file" id="file"/>
 			 		<input type="file" name ="picture" id="picture" style="width:200px;"> 
-			 			<input type="button" onclick="return ajaxDemoUpload();" value="上传">
+			 		<input type="button" onclick="return ajaxDemoUpload();" value="上传">
 			 		</td>
 		 		</tr>
 		 	</table>

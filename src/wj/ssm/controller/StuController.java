@@ -22,6 +22,7 @@ public class StuController {
 
 	@RequestMapping("/addStu")
 	public @ResponseBody Map addStu(StudentVO stu) {
+		System.out.println(stu.getImage());
 		int num = crudImpl.insertStu(stu);
 		Map map = new LinkedHashMap<>();
 		if (num == 1) {
@@ -63,8 +64,8 @@ public class StuController {
 	}
 
 	@RequestMapping("/upPic")
-	public @ResponseBody Map upPic(MultipartFile picture) throws Exception {
-		Map map = new LinkedHashMap();
+	public @ResponseBody Map<String,Object> upPic(MultipartFile picture) throws Exception {
+		Map<String,Object> map = new HashMap<String,Object>();
 		// 原始名称
 		String originalFilename = picture.getOriginalFilename();
 		// 上传图片
@@ -81,7 +82,7 @@ public class StuController {
 			// 将内存中的数据写入磁盘
 			picture.transferTo(newFile);
 			map.put("message", "Y");
-			map.put("name", newFileName);
+			map.put("filename", newFileName);
 		}
 		return map;
 	}

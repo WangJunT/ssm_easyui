@@ -126,7 +126,6 @@ jQuery.extend({
                     status = "error";
                     jQuery.handleError(s, xml, status, e);
                 }
-
                 // The request was completed
                 if( s.global )
                     jQuery.event.trigger( "ajaxComplete", [xml, s] );
@@ -201,8 +200,8 @@ jQuery.extend({
             jQuery.globalEval( data );
         // Get the JavaScript object, if JSON is used.
         if ( type == "json" )
-        	eval("data = \" "+data+" \" ");
-          //  eval( "data = " + data );
+        	eval( "data = " + data );
+        	//eval("data = \" "+data+" \" ");
         // evaluate scripts within html
         if ( type == "html" )
             jQuery("<div>").html(data).evalScripts();
