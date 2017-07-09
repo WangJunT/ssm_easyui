@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### SSM 和 Jquery和EasyUI练手
 
 - 项目起始页：
@@ -24,3 +25,11 @@
 
 2, 使用 easyui 时，用 table 显示获取到的数据，有一个是图片，当我点击修改的时候，希望在图片那一栏将图片显示出来，但是没有做到。
 
+=======
+#### SSM 和 Jquery和EasyUI练手
+
+1. 项目起始页：
+	
+
+![](https://github.com/WangJunT/ssm_easyui/blob/master/WebContent/resource/image/1.PNG)
+>>>>>>> 5b4fc92f72595bc3c79ae401e910ec1c5a5cf20f
